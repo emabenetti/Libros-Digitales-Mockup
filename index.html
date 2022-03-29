@@ -1,0 +1,403 @@
+<!-- 
+    TODO: 
+
+    Agregar TABS con las secciones del proceso Registrar/Consultar/Etc
+
+    Agregar los links utiles como el de descarga del hash y el de TAD de AFIP
+
+    Vale Musante - Generacion de PDF en Nova
+
+    Dani Ocampo - Registro de ingreso de cobranza Sunchales
+
+    FINALIZADO - Cambiar date picker para que incluya dias
+
+    FINALIZADO - Agregar opcion filiales "Todas" y "Ninguno"
+    
+    FINALIZADO - Agregar nuevo libro "Libro SSN"
+
+    FINALIZADO - Agregar todos los tipos de libro para "Libro SSN"
+
+    Nro de Acta solo se usa para libros asociados
+
+    Agregar dentro de Libro Societario el tipo de libro "Actas de Consejo de Administración", "Actas de Asamblea", + otros que tiene que confirmar Fer
+
+    Quitar categoria IVA Compras e IVA ventas
+
+    Hablar con Debora Bartizaghi (de licencia hasta el 29) para confirmar libros de ART
+
+    Prevencion Retiro lo confirmamos con Fer y Ana Barale
+
+    Links: 
+    Consultar registros: 
+    https://tramitesadistancia.gob.ar/registros-publicos/consulta-registros
+
+    Descargar Hash: 
+    https://tramitesadistancia.gob.ar/descarga.html
+
+    Directorio de PDFs guardados: 
+    \\ss1039\Sectores\Contaduria\Libros
+
+    Link a Tramites a Distancia (TAD):
+    https://tramitesadistancia.gob.ar/tramitesadistancia/detalle-tipo?id=1368
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libros Digitales</title>
+    <link rel="stylesheet" type="text/css" href="https://natalfwk.gruposancorseguros.com/2.3.1/nf.min.css" />
+</head>
+
+<body>
+    <div id="general">
+        <div>
+            <div class="row">
+                <nf-menu v-bind:title="title" v-bind:has-favorites="hasFavorites" v-bind:has-search="hasSearch"
+                    v-bind:logo="logo">
+                    <!--<template slot="side-menu">
+                    <nf-side-menu :fully-closed="true" :items="sideMenuItems"></nf-side-menu>
+                </template> -->
+                </nf-menu>
+            </div>
+        </div>
+
+        <!-- PRUEBA DE TABS -->
+        <div class="container margin-top">
+            <div id="app">
+                <nf-wizard id="wizard" v-bind:type="wizard.type" v-bind:mode="wizard.mode"
+                    v-bind:validation-mode="wizard.validationMode" v-bind:active-step.sync="wizard.activeStep"
+                    v-bind:steps="wizard.steps" v-on:init="onInit" v-on:enter-step="onEnterStep" v-bind:buttons=" { 
+                        prev: { text: 'Anterior', class: 'btn-primary' }, 
+                        next: { text: 'Siguiente', class: 'btn-primary' }, 
+                        final: { text: 'Consultar', class: 'btn-primary' } 
+                    }">
+                </nf-wizard>
+            </div>
+
+            <!-- Maquetado de cada solapa del Wizard -->
+            <div id="step1" class="hide" v-pre>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="libros" class="form-vertical" name="libros" v-validation v-on:submit.prevent>
+
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="" class="control-label">Empresa:</label>
+                                    <select class="form-control" rows="3" id="" name="">
+                                        <option value="1">Sancor Seguros</option>
+                                        <option value="2">Prevención ART </option>
+                                        <option value="3">Prevención Retiro</option>
+                                    </select>
+                                    <!-- <span class="help-block">Texto de ayuda en línea</span> -->
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="selectnativo" class="control-label margin-top">Seleccione Libro
+                                        Digital:</label>
+                                    <select class="form-control" rows="3" id="libro" name="libro"
+                                        onchange="cambia_tipolibro()">
+                                        <option value="-">
+                                        <option value="1">Libro Contable</option>
+                                        <option value="2">Libro Societario </option>
+                                        <option value="3">Libro SSN</option>
+                                        <option value="4">Libro Prevencion ART</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <label for="selectnativo" class="control-label margin-top">Tipo de
+                                                Libro</label>
+                                            <select class="form-control" rows="3" id="tipo" name="tipo">
+                                                <option value="-"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-6">
+                                                <label for="" class="control-label margin-top">Filial:</label>
+                                                <select class="form-control" rows="3" id="" name="">
+                                                    <option value="-"></option>
+                                                    <option value="1">Todas</option>
+                                                    <option value="2">Ninguna</option>
+                                                    <option value="3">Sunchales</option>
+                                                    <option value="4">Tierra del Fuego</option>
+                                                    <option value="5">Comodoro Rivadavia</option>
+                                                </select>
+                                                <!-- <span class="help-block">Texto de ayuda en línea</span> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row margin-top">
+                                        <div class="col-xs-6">
+                                            <label for="currentMonth">Seleccione Período:</label>
+                                            <nf-datepicker id="currentMonth" name="'currentMonth'"
+                                                v-model="currentMonth" v-bind:format="'DD/MM/YYYY'">
+                                            </nf-datepicker>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="focusedInput">N° de Acta:</label>
+                                                <input class="form-control" id="focusedInput" name="focusedInput"
+                                                    type="number" min="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label margin-top" for="focusedInput">Ingrese HASH
+                                        generado:</label>
+                                    <input class="form-control" id="focusedInput" name="focusedInput" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-lg">Confirmar</button>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <div class="col-xs-6">
+                                        <h3 class="text-center">Links útiles</h3>
+                                    </div>
+                                    <div>
+                                        <div class="col-xs-2">
+                                            <h3><a class="shortcut"
+                                                    href="https://tramitesadistancia.gob.ar/descarga.html">
+                                                    <span>Descargar programa HASH</span><br><br>
+                                                    <i class="fa fa-download fa-lg margin-top-half"></i>
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <h3><a class="shortcut"
+                                                    href="https://tramitesadistancia.gob.ar/#/inicio">
+                                                    <span>Tramites a distancia</span><br><br><br>
+                                                    <i class="fa fa-external-link fa-lg margin-top-half"></i>
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <h3><a class="shortcut"
+                                                    href="\\ss1039\Sectores\Contaduria\Libros">
+                                                    <span>Directorio de PDFs</span><br><br><br>
+                                                    <i class="fa fa-file-pdf-o fa-lg margin-top-half"></i>
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <!-- <div class="col-xs-2">
+                                            <h3><a class="shortcut"
+                                                    href="https://tramitesadistancia.gob.ar/descarga.html">
+                                                    <span>Descargar programa HASH</span><br>
+                                                    <i class="fa fa-download fa-lg"></i>
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <h3 class="text-center">Tramites a Distancia</h3>
+                                            <button class="btn btn-primary-circle margin-top"><i
+                                                    class="fa fa-external-link fa-lg" aria-hidden="true"></i></button>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <h3 class="text-center">Directorio de PDFs</h3>
+                                            <button class="btn btn-primary-circle margin-top"><i
+                                                    class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="step2" class="hide" v-pre>
+                <div class="container">
+                    <form id="libros2" name="libros" v-validation v-on:submit.prevent>
+                        <span class="help-block">Formulario para consultar registros guardados</span>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group margin-top">
+                                    <label for="" class="control-label">Empresa:</label>
+                                    <select class="form-control" rows="3" id="" name="">
+                                        <option value="1">Sancor Seguros</option>
+                                        <option value="2">Prevención ART </option>
+                                        <option value="3">Prevención Retiro</option>
+                                    </select>
+                                    <!-- <span class="help-block">Texto de ayuda en línea</span> -->
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="selectnativo" class="control-label margin-top">Seleccione Libro
+                                        Digital:</label>
+                                    <select class="form-control" rows="3" id="libro2" name="libro"
+                                        onchange="cambia_tipolibro2()">
+                                        <option value="0">
+                                        <option value="1">Libro Contable</option>
+                                        <option value="2">Libro Societario </option>
+                                        <option value="3">Libro SSN</option>
+                                        <option value="4">Libro IVA Ventas</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <label for="selectnativo" class="control-label margin-top">Tipo de
+                                                Libro</label>
+                                            <select class="form-control" rows="3" id="tipo2" name="tipo">
+                                                <option value="-"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-6">
+                                                <label for="" class="control-label margin-top">Filial:</label>
+                                                <select class="form-control" rows="3" id="" name="">
+                                                    <option value="0"></option>
+                                                    <option value="1">Todas</option>
+                                                    <option value="2">Ninguna</option>
+                                                    <option value="3">Sunchales</option>
+                                                    <option value="4">Tierra del Fuego</option>
+                                                    <option value="5">Comodoro Rivadavia</option>
+                                                </select>
+                                                <!-- <span class="help-block">Texto de ayuda en línea</span> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row margin-top">
+                                        <div class="col-xs-6">
+                                            <label for="currentMonth">Seleccione Período:</label>
+                                            <nf-datepicker id="currentMonth" name="'currentMonth'"
+                                                v-model="currentMonth" v-bind:format="'DD/MM/YYYY'">
+                                            </nf-datepicker>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="focusedInput">N° de Acta:</label>
+                                                <input class="form-control" id="focusedInput" name="focusedInput"
+                                                    type="number" min="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--             <div id="step3" class="hide" v-pre>
+                <h2>Bárbaro {{ nombreCompleto }}!!</h2>
+                <h3>Ya podés crear tu cuenta, hace clic en finalizar !!</h3>
+            </div> -->
+        </div>
+    </div>
+
+
+    <script>
+        var LibroContable = new Array("-", "Libro Diario", "Libro de Inventario y Balances");
+        var LibroSocietario = new Array("-", "Libro de Actas", "Libro de Registro de Acciones");
+        var LibroSSN = new Array(
+            "-",
+            "Actas Del Comité De Control Interno",
+            "Actuaciones Judiciales Y Mediaciones",
+            "Denuncia De Siniestros",
+            "Registros De Emisión / Anulación / Amortización",
+            "Operaciones De Reaseguro Pasivo",
+            "Operaciones De Reaseguro Activo",
+            "Certificado De Cobertura",
+            "Registros De Cobranzas Y Pagos",
+            "Auxiliar De Inventario De Siniestros Pendientes",
+            "Auxiliar De Inventario De Riesgos En Curso",
+            "Auxiliar De Inventario De Premios A Cobrar",
+            "Auxiliar De Inventario De Previsión Para Incobrabilidad",
+            "Auxiliar De Movimiento De Fondos Diarios"
+        );
+
+        var LibroVentas = new Array("-");
+
+        var TodosLibros = [
+            [],
+            LibroContable,
+            LibroSocietario,
+            LibroSSN,
+            LibroVentas,
+        ];
+
+        function cambia_tipolibro() {
+            //tomo el valor del select del pais elegido 
+            var libro
+            libro = document.getElementById("libro").value
+            console.log("Variable libro: " + libro)
+            //miro a ver si el pais está definido 
+            if (libro > 0) {
+                //si estaba definido, entonces coloco las opciones de la provincia correspondiente. 
+                //selecciono el array de provincia adecuado 
+                mis_libros = TodosLibros[libro]
+                console.log("Mis libros: " + mis_libros)
+                //calculo el numero de provincias 
+                num_libros = mis_libros.length
+                console.log("Num libros: " + num_libros)
+                //marco el número de provincias en el select 
+                document.getElementById("tipo").length = num_libros
+                //para cada provincia del array, la introduzco en el select 
+                for (i = 0; i < num_libros; i++) {
+                    document.getElementById("tipo").options[i].value = mis_libros[i]
+                    document.getElementById("tipo").options[i].text = mis_libros[i]
+                }
+            } else {
+                //si no había provincia seleccionada, elimino las provincias del select 
+                document.getElementById("tipo").length = 1
+                //coloco un guión en la única opción que he dejado 
+                document.getElementById("tipo").options[0].value = "-"
+                document.getElementById("tipo").options[0].text = "-"
+            }
+            //marco como seleccionada la opción primera de provincia 
+            document.getElementById("tipo").options[0].selected = true
+        }
+
+        function cambia_tipolibro2() {
+            //tomo el valor del select del pais elegido 
+            var libro2
+            libro2 = document.getElementById("libro2").value
+            console.log("Variable libro 2: " + libro2)
+            //miro a ver si el pais está definido 
+            if (libro2 > 0) {
+                //si estaba definido, entonces coloco las opciones de la provincia correspondiente. 
+                //selecciono el array de provincia adecuado 
+                mis_libros = TodosLibros[libro2]
+                console.log("Mis libros: " + mis_libros)
+                //calculo el numero de provincias 
+                num_libros = mis_libros.length
+                console.log("Num libros: " + num_libros)
+                //marco el número de provincias en el select 
+                document.getElementById("tipo2").length = num_libros
+                //para cada provincia del array, la introduzco en el select 
+                for (i = 0; i < num_libros; i++) {
+                    document.getElementById("tipo2").options[i].value = mis_libros[i]
+                    document.getElementById("tipo2").options[i].text = mis_libros[i]
+                }
+            } else {
+                //si no había provincia seleccionada, elimino las provincias del select 
+                document.getElementById("tipo2").length = 1
+                //coloco un guión en la única opción que he dejado 
+                document.getElementById("tipo2").options[0].value = "-"
+                document.getElementById("tipo2").options[0].text = "-"
+            }
+            //marco como seleccionada la opción primera de provincia 
+            document.getElementById("tipo2").options[0].selected = true
+        }
+    </script>
+    <script type="text/javascript" src="https://natalfwk.gruposancorseguros.com/2.3.1/nf.min.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+
+</html>
