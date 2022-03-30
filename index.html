@@ -85,7 +85,7 @@
                     <div class="col-md-12">
                         <form id="libros" class="form-vertical" name="libros" v-validation v-on:submit.prevent>
 
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="" class="control-label">Empresa:</label>
                                     <select class="form-control" rows="3" id="" name="">
@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-xs-6">
+                                        <div class="col-md-6">
                                             <label for="selectnativo" class="control-label margin-top">Tipo de
                                                 Libro</label>
                                             <select class="form-control" rows="3" id="tipo" name="tipo">
@@ -118,7 +118,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-xs-6">
+                                            <div class="col-md-6">
                                                 <label for="" class="control-label margin-top">Filial:</label>
                                                 <select class="form-control" rows="3" id="" name="">
                                                     <option value="-"></option>
@@ -135,13 +135,13 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="row margin-top">
-                                        <div class="col-xs-6">
+                                        <div class="col-md-6">
                                             <label for="currentMonth">Seleccione Período:</label>
                                             <nf-datepicker id="currentMonth" name="'currentMonth'"
                                                 v-model="currentMonth" v-bind:format="'DD/MM/YYYY'">
                                             </nf-datepicker>
                                         </div>
-                                        <div class="col-xs-6">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label" for="focusedInput">N° de Acta:</label>
                                                 <input class="form-control" id="focusedInput" name="focusedInput"
@@ -161,27 +161,27 @@
                             </div>
                             <div>
                                 <div class="form-group">
-                                    <div class="col-xs-6">
+                                    <div class="col-md-6">
                                         <h2 class="text-center">Links útiles</h2>
                                     </div>
                                     <div>
-                                        <div class="col-xs-3">
+                                        <div class="col-md-3">
                                             <h3><a class="shortcut"
                                                     href="https://tramitesadistancia.gob.ar/descarga.html" target="_blank" rel="noopener noreferrer">
-                                                    <span>Descargar programa HASH</span><br><br>
-                                                    <i class="fa fa-download fa-lg margin-top-half"></i>
+                                                    <h3><center>Descargar<br> programa HASH</center></h3>
+                                                    <center><i class="fa fa-download fa-lg margin-top-half"></i></center>
                                                 </a>
                                             </h3>
                                         </div>
-                                        <div class="col-xs-3">
+                                        <div class="col-md-3">
                                             <h3><a class="shortcut"
                                                     href="https://tramitesadistancia.gob.ar/#/inicio" target="_blank" rel="noopener noreferrer">
-                                                    <span>Tramites a distancia</span><br><br><br>
-                                                    <i class="fa fa-external-link fa-lg margin-top-half"></i>
+                                                    <center><h3>Tramites<br> a distancia</h3></center>
+                                                <center><i class="fa fa-external-link fa-lg margin-top-half"></i></center>
                                                 </a>
                                             </h3>
                                         </div>
-                                        <!-- <div class="col-xs-2">
+                                        <!-- <div class="col-md-2">
                                             <h3><a class="shortcut"
                                                     href="https://tramitesadistancia.gob.ar/descarga.html">
                                                     <span>Descargar programa HASH</span><br>
@@ -189,12 +189,12 @@
                                                 </a>
                                             </h3>
                                         </div>
-                                        <div class="col-xs-2">
+                                        <div class="col-md-2">
                                             <h3 class="text-center">Tramites a Distancia</h3>
                                             <button class="btn btn-primary-circle margin-top"><i
                                                     class="fa fa-external-link fa-lg" aria-hidden="true"></i></button>
                                         </div>
-                                        <div class="col-xs-2">
+                                        <div class="col-md-2">
                                             <h3 class="text-center">Directorio de PDFs</h3>
                                             <button class="btn btn-primary-circle margin-top"><i
                                                     class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></button>
@@ -214,7 +214,7 @@
                     <form id="libros2" name="libros" v-validation v-on:submit.prevent>
                         <span class="help-block">Formulario para consultar registros guardados</span>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <div class="form-group margin-top">
                                     <label for="" class="control-label">Empresa:</label>
                                     <select class="form-control" rows="3" id="" name="">
@@ -239,7 +239,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-xs-6">
+                                        <div class="col-md-6">
                                             <label for="selectnativo" class="control-label margin-top">Tipo de
                                                 Libro</label>
                                             <select class="form-control" rows="3" id="tipo2" name="tipo">
@@ -247,7 +247,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-xs-6">
+                                            <div class="col-md-6">
                                                 <label for="" class="control-label margin-top">Filial:</label>
                                                 <select class="form-control" rows="3" id="" name="">
                                                     <option value="0"></option>
@@ -264,13 +264,13 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="row margin-top">
-                                        <div class="col-xs-6">
+                                        <div class="col-md-6">
                                             <label for="currentMonth">Seleccione Período:</label>
                                             <nf-datepicker id="currentMonth" name="'currentMonth'"
                                                 v-model="currentMonth" v-bind:format="'DD/MM/YYYY'">
                                             </nf-datepicker>
                                         </div>
-                                        <div class="col-xs-6">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label" for="focusedInput">N° de Acta:</label>
                                                 <input class="form-control" id="focusedInput" name="focusedInput"
